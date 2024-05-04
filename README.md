@@ -1,106 +1,89 @@
-# Getting Started
+Sure, here's an updated `README.md` file for your project:
 
-**IMPORTANT: Do not send pull requests to this repository. This is a template repository and is not used for grading. Any pull requests will be closed and ignored.**
+# Backend Engineer Assessment
 
 ## Introduction
 
-If you are reading this, you are probably have received this project as a coding challenge. Please read the instructions
-carefully and follow the steps below to get started.
+This is a Spring Boot application using Java, Gradle, and Temporal. It also integrates with Stripe for payment processing. The application provides two APIs: `createAccount` and `updateAccount`.
 
 ## Setup
 
-### Pre-requisities
+### Prerequisites
 
-To run the application you would require:
+- Java 17 or later
+- Docker
+- Temporal
+- Stripe API Keys
+- IntelliJ IDEA
 
-- [Java](https://www.azul.com/downloads/#zulu)
-- [Temporal](https://docs.temporal.io/cli#install)
-- [Docker](https://docs.docker.com/get-docker/)
-- [Stripe API Keys](https://stripe.com/docs/keys)
+### Installation
 
-### On macOS:
+#### Java
 
-First, you need to install Java 21 or later. You can download it from [Azul](https://www.azul.com/downloads/#zulu) or
-use [SDKMAN](https://sdkman.io/).
+You can download Java from [Azul](https://www.azul.com/downloads/#zulu) or use [SDKMAN](https://sdkman.io/).
 
-```sh
-brew install --cask zulu21
-```
+#### Docker
 
-You can install Temporal using Homebrew
+You can install Docker from the [official website](https://docs.docker.com/get-docker/).
 
-```sh
-brew install temporal
-```
+#### Temporal
 
-or visit [Temporal Installation](https://docs.temporal.io/cli#install) for more information.
+You can install Temporal from the [official website](https://docs.temporal.io/cli#install).
 
-You can install Docker using Homebrew
-
-```sh
-brew install docker
-```
-
-or visit [Docker Installation](https://docs.docker.com/get-docker/) for more information.
-
-### Other platforms
-
-Please check the official documentation for the installation of Java, Temporal, and Docker for your platform.
-
-### Stripe API Keys
+#### Stripe API Keys
 
 Sign up for a Stripe account and get your API keys from the [Stripe Dashboard](https://dashboard.stripe.com/apikeys).
-Then in `application.properties` file add the following line with your secret key.
 
-```properties
-stripe.api-key=sk_test_51J3j
-```
+#### IntelliJ IDEA
+
+You can download IntelliJ IDEA from the [official website](https://www.jetbrains.com/idea/download/).
+
+### Configuration
+
+Update the `application-prod.properties` and `application.properties` files with your environment variables.
 
 ## Run
 
-You are required to first start the temporal server using the following command
+### Development Mode
+
+First, start the Temporal server:
 
 ```sh
 temporal server start-dev
 ```
 
-and then run the application using the following command or using your IDE.
+Then, run the application in IntelliJ IDEA.
+
+### Production Mode
+
+1. Build the Docker image:
 
 ```sh
-./gradlew bootRun
+docker build -t backend-engineer-assessment:1.0.0 .
 ```
 
-### Other commands
+2. In the `production` folder, there is a Docker Compose file and an environment file. The DevOps engineer can change the properties in the environment file to configure the application for the production environment.
 
-#### Lint
-To run lint checks, use the following command
+3. Run the Docker container (for example):
 
 ```sh
-./gradlew sonarlintMain
+docker-compose up -d
 ```
 
-#### Code Formatting
-To format the code, use the following command
+### Test Mode
 
-```sh
-./gradlew spotlessApply
-```
+The application is integrated with Testcontainers for integration testing. Run the tests in IntelliJ IDEA to test the `createAccount` and `updateAccount` APIs.
 
-## Guides
+## APIs
 
-The following guides illustrate how to use some features concretely:
+### createAccount
 
-- [Accessing Data with JPA](https://spring.io/guides/gs/accessing-data-jpa/)
-- [Temporal Quick Start](https://docs.temporal.io/docs/quick-start)
-- [Temporal Java SDK Quick Guide](https://docs.temporal.io/dev-guide/java)
-- [Stripe Quick Start](https://stripe.com/docs/quickstart)
-- [Stripe Java SDK](https://stripe.com/docs/api/java)
+Endpoint: `/api/accounts`
+Method: `POST`
+Payload: `{...}`
 
-### Docker Compose support
+### updateAccount
 
-This project contains a Docker Compose file named `compose.yaml`.
-In this file, the following services have been defined:
-
-- postgres: [`postgres:latest`](https://hub.docker.com/_/postgres)
-
-Please review the tags of the used images and set them to the same as you're running in production.
+Endpoint: `/api/accounts/{accountId}`
+Method: `PATCH`
+Payload: `{...}`

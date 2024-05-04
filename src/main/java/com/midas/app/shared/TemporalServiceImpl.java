@@ -1,4 +1,4 @@
-package com.midas.app.services;
+package com.midas.app.shared;
 
 import com.midas.app.activities.AccountActivityImpl;
 import com.midas.app.workflows.CreateAccountWorkflow;

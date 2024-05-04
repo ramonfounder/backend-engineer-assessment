@@ -19,28 +19,56 @@ public class AccountActivityImpl implements AccountActivity {
   private final AccountService accountService;
   private final StripePaymentProvider stripePaymentProvider;
 
+  /**
+   * saveAccount saves an account in the data store.
+   *
+   * @param account is the account to be saved
+   * @return Account
+   */
   @Override
   public Account saveAccount(Account account) {
     return this.accountService.saveAccount(account);
   }
 
+  /**
+   * createPaymentAccount creates a payment account in the provider.
+   *
+   * @param account is the account to be created
+   * @return Account
+   */
   @Override
   public Account createPaymentAccount(Account account) {
     return this.getPaymentProvider(account.getProviderType())
         .createAccount(new CreateAccount(account));
   }
 
+  /**
+   * updatePaymentAccount updates the payment account in the provider.
+   *
+   * @param account is the account to be created
+   * @return Account
+   */
   @Override
   public Account updatePaymentAccount(Account account) {
     return this.getPaymentProvider(account.getProviderType())
         .updateAccount(new UpdateAccount(account));
   }
 
+  /**
+   * saveAccount deletes the account in the data store.
+   *
+   * @param account is the account to be deleted
+   */
   @Override
   public void deleteAccount(Account account) {
     this.accountService.deleteAccount(account.getId());
   }
 
+  /**
+   * getPaymentProvider gets the paymentProvider.
+   *
+   * @param providerType is the providerType
+   */
   private PaymentProvider getPaymentProvider(ProviderType providerType) {
     return switch (providerType) {
       case STRIPE -> stripePaymentProvider;

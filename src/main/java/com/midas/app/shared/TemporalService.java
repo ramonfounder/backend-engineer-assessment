@@ -1,4 +1,4 @@
-package com.midas.app.services;
+package com.midas.app.shared;
 
 import io.temporal.client.WorkflowOptions;
 import javax.annotation.Nullable;

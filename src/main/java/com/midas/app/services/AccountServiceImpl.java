@@ -5,6 +5,7 @@ import com.midas.app.exceptions.ResourceNotFoundException;
 import com.midas.app.models.Account;
 import com.midas.app.models.ProviderType;
 import com.midas.app.repositories.AccountRepository;
+import com.midas.app.shared.TemporalService;
 import com.midas.app.workflows.CreateAccountWorkflow;
 import com.midas.app.workflows.UpdateAccountWorkflow;
 import io.temporal.client.WorkflowClient;

@@ -2,7 +2,7 @@ package com.midas.app.workflows.implementations;
 
 import com.midas.app.activities.AccountActivity;
 import com.midas.app.models.Account;
-import com.midas.app.services.TemporalServiceImpl;
+import com.midas.app.shared.TemporalServiceImpl;
 import com.midas.app.workflows.CreateAccountWorkflow;
 import io.temporal.spring.boot.WorkflowImpl;
 import io.temporal.workflow.Workflow;
