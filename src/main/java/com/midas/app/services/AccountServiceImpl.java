@@ -3,12 +3,14 @@ package com.midas.app.services;
 import com.midas.app.exceptions.ResourceAlreadyExistsException;
 import com.midas.app.exceptions.ResourceNotFoundException;
 import com.midas.app.models.Account;
+import com.midas.app.models.ProviderType;
 import com.midas.app.repositories.AccountRepository;
 import com.midas.app.workflows.CreateAccountWorkflow;
+import com.midas.app.workflows.UpdateAccountWorkflow;
 import io.temporal.client.WorkflowClient;
-import io.temporal.client.WorkflowOptions;
 import io.temporal.workflow.Workflow;
 import java.util.List;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.springframework.data.domain.Example;
@@ -23,6 +25,8 @@ public class AccountServiceImpl implements AccountService {
 
   private final AccountRepository accountRepository;
 
+  private final TemporalService temporalService;
+
   /**
    * createAccount creates a new account in the system or provider.
    *
@@ -31,20 +35,18 @@ public class AccountServiceImpl implements AccountService {
    */
   @Override
   public Account createAccount(Account details) {
-    var options =
-        WorkflowOptions.newBuilder()
-            .setTaskQueue(CreateAccountWorkflow.QUEUE_NAME)
-            .setWorkflowId(details.getEmail())
-            .build();
+    preCreateAccount(details);
+    var createAccountWorkflow =
+        this.temporalService.createWorkflowStub(
+            CreateAccountWorkflow.class, CreateAccountWorkflow.QUEUE_NAME, details.getEmail());
 
     logger.info("initiating workflow to create account for email: {}", details.getEmail());
-
-    var workflow = workflowClient.newWorkflowStub(CreateAccountWorkflow.class, options);
-
-    return workflow.createAccount(details);
+    return createAccountWorkflow.createAccount(details);
   }
 
-  // todo
+  private void preCreateAccount(Account details) {
+    details.setProviderType(ProviderType.STRIPE);
+  }
 
   /**
    * updateAccount updates the account in the system or provider.
@@ -53,8 +55,23 @@ public class AccountServiceImpl implements AccountService {
    * @return Account
    */
   @Override
-  public Account updateAccount(String id, Account details) {
-    return null;
+  public Account updateAccount(UUID id, Account details) {
+
+    Account finalAccount = getFinalAccountDetails(id, details);
+    var updateAccountWorkflow =
+        this.temporalService.createWorkflowStub(
+            UpdateAccountWorkflow.class, UpdateAccountWorkflow.QUEUE_NAME, finalAccount.getEmail());
+
+    logger.info("initiating workflow to update account for email: {}", finalAccount.getEmail());
+    return updateAccountWorkflow.updateAccount(finalAccount);
+  }
+
+  private Account getFinalAccountDetails(UUID id, Account details) {
+    Account account = getAccountById(id);
+    account.setFirstName(details.getFirstName());
+    account.setLastName(details.getLastName());
+    account.setEmail(details.getEmail());
+    return account;
   }
 
   /**
@@ -65,7 +82,6 @@ public class AccountServiceImpl implements AccountService {
    */
   @Override
   public Account saveAccount(Account details) {
-    this.checkAndValidateAccount(details);
     return accountRepository.save(details);
   }
 
@@ -75,7 +91,7 @@ public class AccountServiceImpl implements AccountService {
    * @param id is the id of the account to be deleted.
    */
   @Override
-  public void deleteAccount(String id) {
+  public void deleteAccount(UUID id) {
     accountRepository.deleteById(id);
   }
 
@@ -103,7 +119,7 @@ public class AccountServiceImpl implements AccountService {
   }
 
   @Override
-  public Account getAccountById(String id) {
+  public Account getAccountById(UUID id) {
     return accountRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
   }
 }

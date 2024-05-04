@@ -20,10 +20,10 @@ public interface PaymentProvider {
   Account createAccount(CreateAccount details);
 
   /**
-   * updateAccount creates a new account in the payment provider.
+   * updateAccount updates the account in the payment provider.
    *
-   * @param details is the details of the account to be created.
+   * @param details is the details of the account to be updated.
    * @return Account
    */
-  public Account updateAccount(UpdateAccount details);
+  Account updateAccount(UpdateAccount details);
 }

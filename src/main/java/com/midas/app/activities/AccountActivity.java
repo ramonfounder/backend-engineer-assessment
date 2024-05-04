@@ -16,13 +16,22 @@ public interface AccountActivity {
   Account saveAccount(Account account);
 
   /**
-   * createPaymentAccount creates a payment account in the system or provider.
+   * createPaymentAccount creates a payment account in the provider.
    *
    * @param account is the account to be created
    * @return Account
    */
   @ActivityMethod
   Account createPaymentAccount(Account account);
+
+  /**
+   * updatePaymentAccount updates the payment account in the provider.
+   *
+   * @param account is the account to be created
+   * @return Account
+   */
+  @ActivityMethod
+  Account updatePaymentAccount(Account account);
 
   /**
    * saveAccount deletes the account in the data store.

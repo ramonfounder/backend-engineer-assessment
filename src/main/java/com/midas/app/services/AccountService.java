@@ -2,6 +2,7 @@ package com.midas.app.services;
 
 import com.midas.app.models.Account;
 import java.util.List;
+import java.util.UUID;
 
 public interface AccountService {
   /**
@@ -12,7 +13,7 @@ public interface AccountService {
    */
   Account createAccount(Account details);
 
-  Account updateAccount(String id, Account details);
+  Account updateAccount(UUID id, Account details);
 
   /**
    * saveAccount saves a new account in the system.
@@ -27,7 +28,7 @@ public interface AccountService {
    *
    * @param id is the id of the account.
    */
-  void deleteAccount(String id);
+  void deleteAccount(UUID id);
 
   /**
    * getAccounts returns a list of accounts.
@@ -41,5 +42,5 @@ public interface AccountService {
    *
    * @return Account
    */
-  Account getAccountById(String id);
+  Account getAccountById(UUID id);
 }

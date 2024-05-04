@@ -1,0 +1,39 @@
+summary: Accounts
+
+patch:
+  summary: Update a existed user account
+  operationId: updateUserAccount
+  description: Update a existed user account with the id and given details
+  tags:
+    - Accounts
+  parameters:
+    - name: accountId
+      in: path
+      required: true
+      description: Unique identifier of the user account
+      example: "fba5b240-0e68-4e64-aca6-f12022dc4be3"
+      schema:
+        type: string
+        format: uuid
+  requestBody:
+    description: User account details
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "../schemas.yml#/components/schemas/updateAccount"
+  responses:
+    "200":
+      description: User account updated
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas.yml#/components/schemas/account"
+    "400":
+      $ref: "../../common/responses.yml#/components/responses/badRequest"
+    "401":
+      $ref: "../../common/responses.yml#/components/responses/unauthorized"
+    "403":
+      $ref: "../../common/responses.yml#/components/responses/forbidden"
+    "500":
+      $ref: "../../common/responses.yml#/components/responses/internalServerError"

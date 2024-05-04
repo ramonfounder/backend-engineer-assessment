@@ -6,7 +6,9 @@ import com.midas.app.services.AccountService;
 import com.midas.generated.api.AccountsApi;
 import com.midas.generated.model.AccountDto;
 import com.midas.generated.model.CreateAccountDto;
+import com.midas.generated.model.UpdateAccountDto;
 import java.util.List;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,6 +39,31 @@ public class AccountController implements AccountsApi {
                 .firstName(createAccountDto.getFirstName())
                 .lastName(createAccountDto.getLastName())
                 .email(createAccountDto.getEmail())
+                .build());
+
+    return new ResponseEntity<>(Mapper.toAccountDto(account), HttpStatus.CREATED);
+  }
+
+  /**
+   * POST /accounts : Update the user account Updates the user account with the given details and
+   * attaches a supported payment provider such as &#39;stripe&#39;.
+   *
+   * @param accountId Account ID (required)
+   * @param updateUserAccount User account details (required)
+   * @return User account created (status code 201)
+   */
+  @Override
+  public ResponseEntity<AccountDto> updateUserAccount(
+      UUID accountId, UpdateAccountDto updateAccountDto) {
+    logger.info("Updating account for user with email: {}", updateAccountDto.getEmail());
+
+    var account =
+        accountService.updateAccount(
+            accountId,
+            Account.builder()
+                .firstName(updateAccountDto.getFirstName())
+                .lastName(updateAccountDto.getLastName())
+                .email(updateAccountDto.getEmail())
                 .build());
 
     return new ResponseEntity<>(Mapper.toAccountDto(account), HttpStatus.CREATED);
