@@ -23,4 +23,12 @@ public interface AccountActivity {
    */
   @ActivityMethod
   Account createPaymentAccount(Account account);
+
+  /**
+   * saveAccount deletes the account in the data store.
+   *
+   * @param account is the account to be deleted
+   */
+  @ActivityMethod
+  void deleteAccount(Account account);
 }

@@ -1,4 +1,4 @@
-package com.midas.app.providers.payment;
+package com.midas.app.providers.payment.models;
 
 import lombok.*;
 
@@ -7,9 +7,10 @@ import lombok.*;
 @Setter
 @Getter
 @Builder
-public class CreateAccount {
+public class UpdateAccount {
   private String userId;
   private String firstName;
   private String lastName;
   private String email;
+  private String providerId;
 }

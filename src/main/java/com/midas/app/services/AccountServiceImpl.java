@@ -1,5 +1,7 @@
 package com.midas.app.services;
 
+import com.midas.app.exceptions.ResourceAlreadyExistsException;
+import com.midas.app.exceptions.ResourceNotFoundException;
 import com.midas.app.models.Account;
 import com.midas.app.repositories.AccountRepository;
 import com.midas.app.workflows.CreateAccountWorkflow;
@@ -9,6 +11,7 @@ import io.temporal.workflow.Workflow;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -41,6 +44,54 @@ public class AccountServiceImpl implements AccountService {
     return workflow.createAccount(details);
   }
 
+  // todo
+
+  /**
+   * updateAccount updates the account in the system or provider.
+   *
+   * @param details is the details of the account to be updated.
+   * @return Account
+   */
+  @Override
+  public Account updateAccount(String id, Account details) {
+    return null;
+  }
+
+  /**
+   * updateAccount saves a new account in the system.
+   *
+   * @param details is the details of the account to be created.
+   * @return Account
+   */
+  @Override
+  public Account saveAccount(Account details) {
+    this.checkAndValidateAccount(details);
+    return accountRepository.save(details);
+  }
+
+  /**
+   * deleteAccount deletes the account in the system.
+   *
+   * @param id is the id of the account to be deleted.
+   */
+  @Override
+  public void deleteAccount(String id) {
+    accountRepository.deleteById(id);
+  }
+
+  /**
+   * deleteAccount validates the account in the system.
+   *
+   * @param details is the details of the account to be validated.
+   */
+  public void checkAndValidateAccount(Account details) {
+    String email = details.getEmail();
+    Example<Account> studentExample = Example.of(Account.builder().email(email).build());
+    if (accountRepository.exists(studentExample)) {
+      throw new ResourceAlreadyExistsException();
+    }
+  }
+
   /**
    * getAccounts returns a list of accounts.
    *
@@ -49,5 +100,10 @@ public class AccountServiceImpl implements AccountService {
   @Override
   public List<Account> getAccounts() {
     return accountRepository.findAll();
+  }
+
+  @Override
+  public Account getAccountById(String id) {
+    return accountRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
   }
 }

@@ -12,10 +12,34 @@ public interface AccountService {
    */
   Account createAccount(Account details);
 
+  Account updateAccount(String id, Account details);
+
+  /**
+   * saveAccount saves a new account in the system.
+   *
+   * @param details is the details of the account to be created.
+   * @return Account
+   */
+  Account saveAccount(Account details);
+
+  /**
+   * deleteAccount deletes ths account in the system by id.
+   *
+   * @param id is the id of the account.
+   */
+  void deleteAccount(String id);
+
   /**
    * getAccounts returns a list of accounts.
    *
    * @return List<Account>
    */
   List<Account> getAccounts();
+
+  /**
+   * getAccount returns an account by id.
+   *
+   * @return Account
+   */
+  Account getAccountById(String id);
 }
