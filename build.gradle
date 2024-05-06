@@ -41,6 +41,11 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
     sonarlintPlugins 'org.sonarsource.java:sonar-java-plugin:7.30.1.34514'
+//    Testcontainers
+    testImplementation 'io.temporal:temporal-testing:1.17.0'
+    testImplementation 'org.testcontainers:junit-jupiter'
+    testImplementation 'org.testcontainers:postgresql:1.19.7'
+
 
     implementation 'io.swagger.core.v3:swagger-annotations:2.2.20'
     implementation 'org.openapitools:jackson-databind-nullable:0.2.1'

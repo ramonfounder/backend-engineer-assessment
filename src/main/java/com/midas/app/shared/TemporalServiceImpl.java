@@ -12,10 +12,11 @@ import io.temporal.common.RetryOptions;
 import io.temporal.serviceclient.WorkflowServiceStubs;
 import io.temporal.worker.Worker;
 import io.temporal.worker.WorkerFactory;
-import jakarta.annotation.PostConstruct;
 import java.time.Duration;
 import javax.annotation.Nullable;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -61,7 +62,7 @@ public class TemporalServiceImpl implements TemporalService {
         .build();
   }
 
-  @PostConstruct
+  @EventListener(ApplicationReadyEvent.class)
   public void initialize() {
     // Connect to Temporal service
     WorkflowServiceStubs service = WorkflowServiceStubs.newLocalServiceStubs();

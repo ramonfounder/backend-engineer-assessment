@@ -1,0 +1,6 @@
+services:
+  temporal:
+    image: 'davidsackett/temporal-dev:latest'
+    ports:
+      - '7233:7233'
+      - '8233:8233'
